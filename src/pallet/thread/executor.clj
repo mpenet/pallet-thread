@@ -38,9 +38,9 @@
                  (or (find-thread-group thread-group-name)
                      (pallet.thread.executor/thread-group thread-group-name)))
             (current-thread-group))]
-    (proxy [ThreadFactory] []
-      (newThread [^Runnable r]
-        (let [thread (Thread. thread-group r)]
+    (reify ThreadFactory
+      (newThread [_ r]
+        (let [thread (Thread. thread-group ^Runnable r)]
           (.setName thread (str prefix "-" (.getId thread)))
           (.setDaemon thread (boolean daemon))
           thread)))))
